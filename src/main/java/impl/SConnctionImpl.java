@@ -12,9 +12,10 @@ public class SConnctionImpl implements SConnection {
     private final Connection connection;
     private final AutoCloseable closeable;
 
-    public SConnctionImpl(Connection connection, AutoCloseable closeable) {
+    public SConnctionImpl(Connection connection, AutoCloseable closeable) throws SQLException {
         this.connection = connection;
         this.closeable = closeable;
+        this.connection.setAutoCommit(true);
     }
 
     @Override
