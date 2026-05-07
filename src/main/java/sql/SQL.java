@@ -66,11 +66,11 @@ public class SQL {
     }
 
     public static Optional<List<Object>> singel(String sql, Object... args) {
-        return getConnection().singel(sql, args).stream().findFirst();
+        return getConnection().single(sql, args).stream().findFirst();
     }
 
     public static <R> Optional<R> singel(Class<R> clazz, String sql, Object... args) {
-        return getConnection().singel(clazz, sql, args).stream().findFirst();
+        return getConnection().single(clazz, sql, args).stream().findFirst();
     }
 
     public static boolean create(String sql) {

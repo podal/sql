@@ -17,7 +17,7 @@ public class WithTry {
             con.update("INSERT INTO Books VALUES (?,?)", 2L, "Great Expectations");
 
             con.list("SELECT * FROM Books").forEach(out::println);
-            con.singel(Books.class, "SELECT * FROM Books where id = ?", 1L).ifPresent(out::println);
+            con.single(Books.class, "SELECT * FROM Books where id = ?", 1L).ifPresent(out::println);
         }
     }
 }

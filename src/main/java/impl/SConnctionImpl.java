@@ -50,12 +50,12 @@ public class SConnctionImpl implements SConnection {
     }
 
     @Override
-    public Optional<List<Object>> singel(String sql, Object... args) {
+    public Optional<List<Object>> single(String sql, Object... args) {
         return list(sql, args).stream().findFirst();
     }
 
     @Override
-    public <R> Optional<R> singel(Class<R> clazz, String sql, Object... args) {
+    public <R> Optional<R> single(Class<R> clazz, String sql, Object... args) {
         return list(clazz, sql, args).stream().findFirst();
     }
 
