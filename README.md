@@ -1,26 +1,26 @@
 # SQL
 
-> A lightweight Java library for writing SQL in modern Java.
+A lightweight Java library for executing plain SQL with optional record mapping.
 
-SQL is a minimal database library focused on simplicity and plain SQL.
+No ORM. No query builders. No magic.
 
-It requires **JDK 17+** and uses Java records for automatic object mapping.
+Just SQL + Java.
 
----
+
+## Quick Start
+
+```java
+SQL.connect("jdbc:sqlite:db");
+List<Book> books = SQL.list(Book.class, "select * from books");
+books.forEach(System.out::println);
+```
+SQL executes SQL and optionally maps results to Java records.
 
 # Why?
 
-Modern Java has become much more lightweight with features like:
+Most Java SQL libraries introduce abstraction layers that hide SQL.
 
-- records
-- simpler application structure
-- improved syntax
-
-SQL follows the same philosophy:
-
-- write plain SQL
-- avoid heavy ORM frameworks
-- keep database code readable
+This library does the opposite: it keeps SQL explicit and adds only minimal convenience for execution and mapping.
 
 ---
 
@@ -162,6 +162,29 @@ Optional<Book> book =
 
 ---
 
+## Raw Row Access
+
+Use `SRow` when you want direct access to query results without mapping.
+
+```java
+List<SRow> rows = SQL.list("select * from books");
+
+for (SRow row : rows) {
+    System.out.println(row.get("name"));
+}
+```
+
+`SRow` represents a single database row and allows column-based access.
+
+```java
+SRow row = SQL.single("select * from books where id = ?", 1).orElseThrow();
+
+String name = row.get("name");
+long id = row.get("id", Long.class);
+```
+
+---
+
 # Update Statements
 
 Use `update(...)` for:
@@ -237,9 +260,13 @@ Just Java and SQL.
 
 ## Transactions
 
-Transactions are not supported in 1.0.
+SQL is designed around a stateless execution model in version 1.0.
 
-Each query is executed independently using auto-commit mode.
+Each query is executed independently using JDBC auto-commit mode.
+
+This avoids connection state complexity and keeps the API minimal.
+
+Transactions will be introduced in a future version if needed.
 
 # License
 
