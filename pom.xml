@@ -6,19 +6,37 @@
 
     <groupId>io.github.podal</groupId>
     <artifactId>sql</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>${revision}</version>
+    <description>Lightweight SQL library for Java</description>
+    <url>https://github.com/podal/sql</url>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>https://opensource.org/licenses/MIT</url>
+        </license>
+    </licenses>
+
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <revision>0.0.0-SNAPSHOT</revision>
     </properties>
 
     <scm>
         <connection>scm:git:git://github.com/podal/sql.git</connection>
-        <developerConnection>scm:git:ssh://github.com:podal/sql.git</developerConnection>
+        <developerConnection>scm:git:ssh://github.com/podal/sql.git</developerConnection>
         <url>https://github.com/podal/sql</url>
     </scm>
+
+    <distributionManagement>
+        <repository>
+            <id>central</id>
+            <url>https://central.sonatype.com/api/v1/publisher/deployments/download</url>
+        </repository>
+    </distributionManagement>
 
     <dependencies>
         <dependency>
@@ -47,4 +65,12 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+
+    <developers>
+        <developer>
+            <id>podal</id>
+            <name>Podal</name>
+        </developer>
+    </developers>
 </project>
