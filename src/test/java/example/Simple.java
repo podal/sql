@@ -17,7 +17,7 @@ public class Simple {
         SQL.update("INSERT INTO names VALUES (?,?)", 2L, "Sarah");
 
         SQL.list("SELECT * FROM names").forEach(out::println);
-        SQL.singel(Names.class, "SELECT * FROM names where id = ?", 1L).ifPresent(out::println);
+        SQL.single(Names.class, "SELECT * FROM names where id = ?", 1L).ifPresent(out::println);
         SQL.close();
     }
 }

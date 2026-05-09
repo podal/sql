@@ -115,7 +115,7 @@ public class SQL {
      * @return an {@link Optional} containing the first row,
      *         or empty if no row exists
      */
-    public static Optional<SRow> singel(String sql, Object... args) {
+    public static Optional<SRow> single(String sql, Object... args) {
         return getConnection().single(sql, args).stream().findFirst();
     }
 
@@ -130,7 +130,7 @@ public class SQL {
      * @return an {@link Optional} containing the mapped object,
      *         or empty if no row exists
      */
-    public static <R> Optional<R> singel(Class<R> clazz, String sql, Object... args) {
+    public static <R> Optional<R> single(Class<R> clazz, String sql, Object... args) {
         return getConnection().single(clazz, sql, args).stream().findFirst();
     }
 
