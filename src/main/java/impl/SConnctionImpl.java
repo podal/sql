@@ -1,12 +1,14 @@
 package impl;
 
 import sql.SConnection;
+import sql.SException;
+import sql.SRow;
 
 import java.sql.Connection;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class SConnctionImpl implements SConnection {
     private final Connection connection;
@@ -31,15 +33,28 @@ public class SConnctionImpl implements SConnection {
         }
     }
 
+    private record RowInfo(int count, Map<String, Integer> columnMap) {
+    }
+
     @Override
-    public List<List<Object>> list(String s, Object... objs) {
+    public List<SRow> list(String s, Object... objs) {
+        var _info = new AtomicReference<RowInfo>();
         return SList._list(connection, s, objs, row -> {
-            var nr = row.getMetaData().getColumnCount();
-            var rowData = new ArrayList<>(nr);
-            for (int i = 0; i < nr; i++) {
+            var info = _info.get();
+            if (info == null) {
+                ResultSetMetaData meta = row.getMetaData();
+                var count = meta.getColumnCount();
+                var columnMap = new LinkedHashMap<String, Integer>();
+                for (int i = 0; i < count; i++) {
+                    columnMap.put(meta.getColumnName(i + 1), i + 1);
+                }
+                _info.set(info = new RowInfo(count, columnMap));
+            }
+            var rowData = new ArrayList<>(info.count);
+            for (int i = 0; i < info.count; i++) {
                 rowData.add(row.getObject(i + 1));
             }
-            return rowData;
+            return new SRowImpl(info.columnMap, rowData);
         });
     }
 
@@ -50,7 +65,7 @@ public class SConnctionImpl implements SConnection {
     }
 
     @Override
-    public Optional<List<Object>> single(String sql, Object... args) {
+    public Optional<SRow> single(String sql, Object... args) {
         return list(sql, args).stream().findFirst();
     }
 

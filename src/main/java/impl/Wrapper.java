@@ -2,6 +2,7 @@ package impl;
 
 import impl.exception.SPrimitiveConverterNullException;
 import impl.exception.SPrimitiveNoRecord;
+import sql.SException;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;

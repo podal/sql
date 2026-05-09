@@ -7,11 +7,11 @@ public interface SConnection extends AutoCloseable {
     @Override
     void close();
 
-    List<List<Object>> list(String sql, Object... args);
+    List<SRow> list(String sql, Object... args);
 
     <R> List<R> list(Class<R> clazz, String sql, Object... args);
 
-    Optional<List<Object>> single(String sql, Object... args);
+    Optional<SRow> single(String sql, Object... args);
 
     <R> Optional<R> single(Class<R> clazz, String sql, Object... args);
 

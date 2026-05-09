@@ -1,4 +1,4 @@
-package impl;
+package sql;
 
 import java.sql.SQLException;
 

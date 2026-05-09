@@ -1,7 +1,6 @@
 package sql;
 
 import impl.SConnctionImpl;
-import impl.SException;
 import impl.exception.SConnectionNotStartedException;
 
 import java.sql.DriverManager;
@@ -57,7 +56,7 @@ public class SQL {
         }
     }
 
-    public static List<List<Object>> list(String sql, Object... args) {
+    public static List<SRow> list(String sql, Object... args) {
         return getConnection().list(sql, args);
     }
 
@@ -65,7 +64,7 @@ public class SQL {
         return getConnection().list(clazz, sql, args);
     }
 
-    public static Optional<List<Object>> singel(String sql, Object... args) {
+    public static Optional<SRow> singel(String sql, Object... args) {
         return getConnection().single(sql, args).stream().findFirst();
     }
 

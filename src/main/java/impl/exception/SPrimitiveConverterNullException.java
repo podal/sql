@@ -1,6 +1,6 @@
 package impl.exception;
 
-import impl.SException;
+import sql.SException;
 import lombok.Getter;
 
 @Getter
