@@ -235,6 +235,12 @@ SQL intentionally stays small.
 
 Just Java and SQL.
 
-## License
+## Transactions
+
+Transactions are not supported in 1.0.
+
+Each query is executed independently using auto-commit mode.
+
+# License
 
 This project is licensed under the MIT License.
