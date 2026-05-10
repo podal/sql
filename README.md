@@ -1,3 +1,7 @@
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.podal/sql)](https://central.sonatype.com/artifact/io.github.podal/sql)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Java](https://img.shields.io/badge/java-17+-orange.svg)](https://openjdk.org/)
+
 # SQL
 
 A lightweight Java library for executing plain SQL with optional record mapping.
@@ -15,6 +19,32 @@ List<Book> books = SQL.list(Book.class, "select * from books");
 books.forEach(System.out::println);
 ```
 SQL executes SQL and optionally maps results to Java records.
+
+### Maven
+
+Add the dependency:
+
+```xml
+<dependency>
+    <groupId>io.github.podal</groupId>
+    <artifactId>sql</artifactId>
+    <version>1.0.0</version>
+</dependency>
+```
+
+
+### Gradle (Kotlin DSL)
+
+```kotlin
+implementation("io.github.podal:sql:1.0.0")
+```
+
+### Gradle (Groovy)
+
+```groovy
+implementation 'io.github.podal:sql:1.0.0'
+```
+
 
 # Why?
 
