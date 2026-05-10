@@ -21,6 +21,9 @@ public class SQL {
 
     private static SConnection connection;
 
+    private SQL() {
+    }
+
     private static SConnection getConnection() {
         if (connection == null) {
             throw new SConnectionNotStartedException("""
