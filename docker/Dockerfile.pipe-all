@@ -1,0 +1,9 @@
+ARG SQL_VERSION=0.0.0
+FROM podal/sql-pipe:${SQL_VERSION}
+
+WORKDIR /app/lib
+RUN curl -L -O https://repo1.maven.org/maven2/org/mariadb/jdbc/mariadb-java-client/3.5.8/mariadb-java-client-3.5.8.jar
+RUN curl -L -O https://repo1.maven.org/maven2/com/mysql/mysql-connector-j/9.7.0/mysql-connector-j-9.7.0.jar
+RUN curl -L -O https://repo1.maven.org/maven2/com/oracle/database/jdbc/ojdbc17/23.26.1.0.0/ojdbc17-23.26.1.0.0.jar
+RUN curl -L -O https://repo1.maven.org/maven2/org/postgresql/postgresql/42.7.11/postgresql-42.7.11.jar
+RUN curl -L -O https://repo1.maven.org/maven2/org/xerial/sqlite-jdbc/3.53.1.0/sqlite-jdbc-3.53.1.0.jar
