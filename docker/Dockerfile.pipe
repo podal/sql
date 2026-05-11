@@ -1,0 +1,4 @@
+ARG SQL_VERSION=0.0.0
+FROM podal/sql:${SQL_VERSION}
+
+ENTRYPOINT ["/bin/sh", "-c", "cat > /tmp/Main.java && java --enable-native-access=ALL-UNNAMED -cp \"/app/lib/*\" /tmp/Main.java \"$@\"", "--"]

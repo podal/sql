@@ -1,0 +1,5 @@
+ARG SQL_VERSION=0.0.0
+FROM podal/sql-pipe:${SQL_VERSION}
+
+WORKDIR /app/lib
+RUN curl -L -O https://repo1.maven.org/maven2/com/oracle/database/jdbc/ojdbc17/23.26.1.0.0/ojdbc17-23.26.1.0.0.jar
