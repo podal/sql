@@ -13,11 +13,20 @@ import java.util.concurrent.atomic.AtomicReference;
 public class SConnctionImpl implements SConnection {
     private final Connection connection;
     private final AutoCloseable closeable;
+    private boolean closed = false;
 
     public SConnctionImpl(Connection connection, AutoCloseable closeable) throws SQLException {
         this.connection = connection;
         this.closeable = closeable;
         this.connection.setAutoCommit(true);
+    }
+
+    @Override
+    public Connection getConnection() {
+        if (closed) {
+            throw new SException("Connection is closed");
+        }
+        return connection;
     }
 
     @Override
@@ -28,6 +37,7 @@ public class SConnctionImpl implements SConnection {
             } catch (Exception ignore) {
             }
             connection.close();
+            closed = true;
         } catch (SQLException e) {
             throw new SException(e);
         }
@@ -38,6 +48,9 @@ public class SConnctionImpl implements SConnection {
 
     @Override
     public List<SRow> list(String s, Object... objs) {
+        if (closed) {
+            throw new SException("Connection is closed");
+        }
         var _info = new AtomicReference<RowInfo>();
         return SList._list(connection, s, objs, row -> {
             var info = _info.get();
@@ -60,22 +73,34 @@ public class SConnctionImpl implements SConnection {
 
     @Override
     public <R> List<R> list(Class<R> clazz, String s, Object... objs) {
+        if (closed) {
+            throw new SException("Connection is closed");
+        }
         //noinspection rawtypes,unchecked
         return SList._list(connection, s, objs, new Wrapper(clazz));
     }
 
     @Override
     public Optional<SRow> single(String sql, Object... args) {
+        if (closed) {
+            throw new SException("Connection is closed");
+        }
         return list(sql, args).stream().findFirst();
     }
 
     @Override
     public <R> Optional<R> single(Class<R> clazz, String sql, Object... args) {
+        if (closed) {
+            throw new SException("Connection is closed");
+        }
         return list(clazz, sql, args).stream().findFirst();
     }
 
     @Override
     public boolean create(String sql) {
+        if (closed) {
+            throw new SException("Connection is closed");
+        }
         try (var s = connection.prepareStatement(sql)) {
             return s.execute();
         } catch (SQLException e) {
@@ -84,6 +109,9 @@ public class SConnctionImpl implements SConnection {
     }
 
     public int update(String sql, Object... args) {
+        if (closed) {
+            throw new SException("Connection is closed");
+        }
         try (var s = connection.prepareStatement(sql)) {
             for (int i = 0; i < args.length; i++) {
                 s.setObject(i + 1, args[i]);

@@ -8,6 +8,8 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
+import static java.util.Optional.ofNullable;
+
 /**
  * Utility class providing simplified static access to database operations.
  *
@@ -39,10 +41,37 @@ public class SQL {
         return connection;
     }
 
+
+    public static SConnection connect() {
+        var url = getEnvProp("DB_URL");
+        if (url.isEmpty() || url.get().isBlank()) {
+            throw new SException("""
+                    
+                    If you connect without argument, you have to provide system environment or properties DB_URL.
+                    
+                    You can also provide the username and password with DB_USERNAME and DB_PASSWORD
+                    """);
+        }
+        var user = getEnvProp("DB_USERNAME", "DB_USER");
+        var pass = getEnvProp("DB_PASSWORD", "DB_PASS");
+
+        return connect(url.get(), user.orElse(null), pass.orElse(null));
+    }
+
+    private static Optional<String> getEnvProp(String... props) {
+        for (var prop : props) {
+            var value = ofNullable(System.getenv(prop)).or(() -> ofNullable(System.getProperty(prop)));
+            if (value.isPresent()) {
+                return value;
+            }
+        }
+        return Optional.empty();
+    }
+
     /**
      * Opens a new database connection using the specified credentials.
      *
-     * @param url the database connection URL
+     * @param url  the database connection URL
      * @param user the database username
      * @param pass the database password
      * @return an active {@link SConnection}
@@ -88,7 +117,7 @@ public class SQL {
     /**
      * Executes a query and returns all matching rows.
      *
-     * @param sql the SQL query to execute
+     * @param sql  the SQL query to execute
      * @param args optional query parameters
      * @return a list of resulting rows
      */
@@ -100,10 +129,10 @@ public class SQL {
      * Executes a query and maps all resulting rows to instances of
      * the specified class.
      *
-     * @param <R> the result type
+     * @param <R>   the result type
      * @param clazz the target class used for row mapping
-     * @param sql the SQL query to execute
-     * @param args optional query parameters
+     * @param sql   the SQL query to execute
+     * @param args  optional query parameters
      * @return a list of mapped result objects
      */
     public static <R> List<R> list(Class<R> clazz, String sql, Object... args) {
@@ -113,10 +142,10 @@ public class SQL {
     /**
      * Executes a query and returns the first matching row, if present.
      *
-     * @param sql the SQL query to execute
+     * @param sql  the SQL query to execute
      * @param args optional query parameters
      * @return an {@link Optional} containing the first row,
-     *         or empty if no row exists
+     * or empty if no row exists
      */
     public static Optional<SRow> single(String sql, Object... args) {
         return getConnection().single(sql, args).stream().findFirst();
@@ -126,12 +155,12 @@ public class SQL {
      * Executes a query and maps the first matching row to an instance
      * of the specified class.
      *
-     * @param <R> the result type
+     * @param <R>   the result type
      * @param clazz the target class used for row mapping
-     * @param sql the SQL query to execute
-     * @param args optional query parameters
+     * @param sql   the SQL query to execute
+     * @param args  optional query parameters
      * @return an {@link Optional} containing the mapped object,
-     *         or empty if no row exists
+     * or empty if no row exists
      */
     public static <R> Optional<R> single(Class<R> clazz, String sql, Object... args) {
         return getConnection().single(clazz, sql, args).stream().findFirst();
@@ -150,7 +179,7 @@ public class SQL {
     /**
      * Executes an update statement such as INSERT, UPDATE, or DELETE.
      *
-     * @param sql the SQL statement to execute
+     * @param sql  the SQL statement to execute
      * @param args optional query parameters
      * @return the number of affected rows
      */

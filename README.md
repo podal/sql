@@ -109,6 +109,23 @@ SQL.connect(
 );
 ```
 
+## Connection with credentials in system environment
+
+You can configure the database connection using system environment variables or properties.
+
+Required:
+DB_URL
+
+Optional:
+DB_USERNAME
+DB_PASSWORD
+Example:
+
+```java
+SQL.connect();
+```
+The connect() method will automatically read the environment variables and establish the database connection.
+
 ---
 
 # Auto Mapping

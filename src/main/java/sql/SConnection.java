@@ -1,5 +1,6 @@
 package sql;
 
+import java.sql.Connection;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,6 +15,14 @@ import java.util.Optional;
  * in try-with-resources statements.</p>
  */
 public interface SConnection extends AutoCloseable {
+
+    /**
+     * Returns the currently active database connection.
+     *
+     * @return the active {@link Connection}
+     * @throws IllegalStateException if no connection is currently active
+     */
+    Connection getConnection();
     /**
      * Closes this connection and releases any associated resources.
      */
